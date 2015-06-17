@@ -53,6 +53,8 @@ function love.load(arg)
 	deathsound = love.audio.newSource("assets/death.mp3")
 	hitmarker = love.audio.newSource("assets/explosion.wav")
 	love.audio.play(sound)
+	playerdeadImg = love.graphics.newImage('assets/playerdead.gif')
+	
 end
 
 function love.update(dt)
@@ -63,7 +65,7 @@ function love.update(dt)
 	if isAlive then
 		love.graphics.draw(player.img, player.x, player.y)
 	else
-		love.graphics.print("Press 'R' to restart", love.graphics:getWidth()/2-50, love.graphics:getHeight()/2-10)
+		
 	end
 
 	createEnemyTimer = createEnemyTimer - ( 1 * dt)
@@ -79,6 +81,10 @@ function love.update(dt)
 		enemy.y = enemy.y + (200 * dt)
 		
 		if enemy.y > 850 then
+			table.remove(enemies, i)
+		end
+		
+		if enemy.x > 480 then
 			table.remove(enemies, i)
 		end
 	end
@@ -152,8 +158,8 @@ for i, enemy in ipairs(enemies) do
 
 	if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) 
 	and isAlive then
-		
 			table.remove(enemies, i)
+			createEnemyTimer = createEnemyTimerMax
 			isAlive = false
 			love.audio.stop(sound)
 			love.audio.play(deathsound)
@@ -164,17 +170,26 @@ for i, enemy in ipairs(enemies) do
 end
 
 function love.draw(dt)
-
+	
+	if not isAlive then
+		table.remove(enemies, i)
+	else
 	for i, enemy in ipairs(enemies) do 
 		love.graphics.draw(enemy.img, enemy.x, enemy.y)
+	end
 	end
 		
 	for i, bullet in ipairs(bullets) do
 		love.graphics.draw(bullet.img, bullet.x, bullet.y)
 	end
-
-	love.graphics.draw(player.img, player.x, player.y)
 	
+	
+	if isAlive then
+		love.graphics.draw(player.img, player.x, player.y)
+	else
+		love.graphics.draw(playerdeadImg, player.x, player.y)
+		love.graphics.print("Press 'R' to restart", love.graphics:getWidth()/2-50, love.graphics:getHeight()/2-10)
+	end
 	love.graphics.print("Score:" .. score, 30, 750)
 
 end
