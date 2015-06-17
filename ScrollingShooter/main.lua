@@ -154,5 +154,7 @@ function love.draw(dt)
 	end
 
 	love.graphics.draw(player.img, player.x, player.y)
+	
+	love.graphics.rotate(enemy.img, 180)
 
 end
