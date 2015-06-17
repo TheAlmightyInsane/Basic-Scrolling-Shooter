@@ -69,7 +69,7 @@ function love.update(dt)
 		end
 	end
 
-	if isAlive then
+	if isAlive == true then
 		love.graphics.draw(player.img, player.x, player.y)
 	else
 		love.graphics.print("Press 'R' to restart", love.graphics:getWidth()/2-50, love.graphics:getHeight()/2-10)
@@ -154,5 +154,7 @@ function love.draw(dt)
 	end
 
 	love.graphics.draw(player.img, player.x, player.y)
+	
+	love.graphics.print("Score:" .. score, 30, 750)
 
 end
