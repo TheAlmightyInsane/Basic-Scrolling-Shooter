@@ -54,20 +54,23 @@ end
 function love.update(dt)
 
 		for i, enemy in ipairs(enemies) do
-		for j, bullet in ipairs(bullets) do
-			if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), bullet.x, bullet.y, bullet.img:getWidth(), bullet.img:getHeight()) then
-				table.remove(bullets, j)
-				table.remove(enemies, i)
-				score = score + 1
-			end
-		end
-
-		if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) 
-		and isAlive then
+	for j, bullet in ipairs(bullets) do
+		if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), bullet.x, bullet.y, bullet.img:getWidth(), bullet.img:getHeight()) then
+			table.remove(bullets, j)
 			table.remove(enemies, i)
-			isAlive = false
+			score = score + 1
 		end
 	end
+
+	if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) 
+	and isAlive then
+		
+			table.remove(enemies, i)
+			isAlive = false
+		
+		end
+	end
+end
 
 	if isAlive == true then
 		love.graphics.draw(player.img, player.x, player.y)
@@ -129,18 +132,22 @@ function love.update(dt)
 	end
 	
 	if not isAlive and love.keyboard.isDown('r') then
+		-- remove all our bullets and enemies from screen
 		bullets = {}
 		enemies = {}
-		
+
+		-- reset timers
 		canShootTimer = canShootTimerMax
-		createEnemyTimer = createEnemyTimer
-		
+		createEnemyTimer = createEnemyTimerMax
+
+		-- move player back to default position
 		player.x = 50
 		player.y = 710
-		
+
+		-- reset our game state
 		score = 0
 		isAlive = true
-	end
+end
 end
 
 function love.draw(dt)
