@@ -147,7 +147,7 @@ function love.draw(dt)
 
 	for i, enemy in ipairs(enemies) do 
 		love.graphics.draw(enemy.img, enemy.x, enemy.y)
-		love.graphics.rotate( 180 )
+		love.graphics.rotate( 720 )
 	end
 		
 	for i, bullet in ipairs(bullets) do
