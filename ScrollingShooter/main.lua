@@ -49,8 +49,9 @@ function love.load(arg)
 	player.img = love.graphics.newImage('assets/plane.png')
 	bulletImg = love.graphics.newImage('assets/bullet.png')
 	enemyImg = love.graphics.newImage('assets/enemy.png')
-	sound = love.audio.newSource("assets/music.mp3")
+	sound = love.audio.newSource("assets/music.wav")
 	deathsound = love.audio.newSource("assets/death.mp3")
+	hitmarker = love.audio.newSource("assets/explosion.wav")
 	love.audio.play(sound)
 end
 
@@ -134,6 +135,9 @@ function love.update(dt)
 		-- reset our game state
 		score = 0
 		isAlive = true
+		
+		love.audio.play(sound)
+		love.audio.stop(deathsound)
 end
 
 for i, enemy in ipairs(enemies) do
@@ -142,6 +146,7 @@ for i, enemy in ipairs(enemies) do
 			table.remove(bullets, j)
 			table.remove(enemies, i)
 			score = score + 1
+			love.audio.play(hitmarker)
 		end
 	end
 
