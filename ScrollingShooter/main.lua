@@ -49,30 +49,17 @@ function love.load(arg)
 	player.img = love.graphics.newImage('assets/plane.png')
 	bulletImg = love.graphics.newImage('assets/bullet.png')
 	enemyImg = love.graphics.newImage('assets/enemy.png')
+	sound = love.audio.newSource("assets/music.mp3")
+	deathsound = love.audio.newSource("assets/death.mp3")
+	love.audio.play(sound)
 end
 
 function love.update(dt)
 
-		for i, enemy in ipairs(enemies) do
-	for j, bullet in ipairs(bullets) do
-		if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), bullet.x, bullet.y, bullet.img:getWidth(), bullet.img:getHeight()) then
-			table.remove(bullets, j)
-			table.remove(enemies, i)
-			score = score + 1
-		end
-	end
-
-	if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) 
-	and isAlive then
 		
-			table.remove(enemies, i)
-			isAlive = false
-		
-		end
-	end
-end
 
-	if isAlive == true then
+
+	if isAlive then
 		love.graphics.draw(player.img, player.x, player.y)
 	else
 		love.graphics.print("Press 'R' to restart", love.graphics:getWidth()/2-50, love.graphics:getHeight()/2-10)
@@ -148,6 +135,27 @@ end
 		score = 0
 		isAlive = true
 end
+
+for i, enemy in ipairs(enemies) do
+	for j, bullet in ipairs(bullets) do
+		if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), bullet.x, bullet.y, bullet.img:getWidth(), bullet.img:getHeight()) then
+			table.remove(bullets, j)
+			table.remove(enemies, i)
+			score = score + 1
+		end
+	end
+
+	if CheckCollision(enemy.x, enemy.y, enemy.img:getWidth(), enemy.img:getHeight(), player.x, player.y, player.img:getWidth(), player.img:getHeight()) 
+	and isAlive then
+		
+			table.remove(enemies, i)
+			isAlive = false
+			love.audio.stop(sound)
+			love.audio.play(deathsound)
+		
+		end
+	end
+
 end
 
 function love.draw(dt)
